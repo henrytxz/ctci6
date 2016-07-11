@@ -1,45 +1,39 @@
 from LinkedList import LinkedList
 
+"""
+2.1 Remove Dups: Write code to remove duplicates from an unsorted linked list.
+FOLLOW UP
+How would you solve this problem if a temporary buffer is not allowed
+"""
 
 def remove_dups(ll):
-    if ll.head is None:
+    """
+    scan the list, add node to seen as you go
+    if node seen before, remove it
+    """
+    seen = set()
+    prev = ll.head
+    seen.add(prev.value)
+    if not prev.next:
         return
-
-    current = ll.head
-    seen = set([current.value])
-    while current.next:
-        if current.next.value in seen:
-            current.next = current.next.next
+    curr = prev.next
+    while curr:
+        if curr.value in seen:
+            prev.next = curr.next
+            curr = curr.next
         else:
-            seen.add(current.next.value)
-            current = current.next
-
-    return ll
-
-
-def remove_dups_followup(ll):
-    if ll.head is None:
-        return
-
-    current = ll.head
-    while current:
-        runner = current
-        while runner.next:
-            if runner.next.value == current.value:
-                runner.next = runner.next.next
-            else:
-                runner = runner.next
-        current = current.next
-
-    return ll.head
+            seen.add(curr.value)
+        prev = prev.next
+        if curr:
+            curr = curr.next
 
 ll = LinkedList()
-ll.generate(100, 0, 9)
+ll.add_multiple([2,2,5,3,1,3])
 print(ll)
 remove_dups(ll)
-print(ll)
+assert str(ll) == '2 -> 5 -> 3 -> 1'
 
-ll.generate(100, 0, 9)
-print(ll)
-remove_dups_followup(ll)
-print(ll)
+# ll.generate(100, 0, 9)
+# print(ll)
+# remove_dups_followup(ll)
+# print(ll)
