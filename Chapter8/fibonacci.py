@@ -1,7 +1,3 @@
-# class Fibonacci(object):
-#     def __init__(self):
-#         self.cache = {}
-
 import time
 
 cache = {}
@@ -15,7 +11,6 @@ def fib(n):
     return result
 
 if __name__ == '__main__':
-    # print len([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144])
     begin = time.time()
     assert map(fib, range(13)) == [0,1,1,2,3,5,8,13,21,34,55,89,144]
     print fib(100)
