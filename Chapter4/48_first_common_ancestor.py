@@ -1,33 +1,5 @@
-class Node(object):
-    def __init__(self, key):
-        self.key = key
-        self.lc = None
-        self.rc = None
+from Chapter4.node import Node
 
-    def print_key(self):
-        print '-' * 22
-        print '  {0} '.format(self.key)
-
-    def show(self):
-        if self.lc and self.rc:
-            self.print_key()
-            self.show_both_children()
-        elif self.lc:
-            self.print_key()
-            print ' /'
-            print '{0}'.format(self.lc.key)
-            self.lc.show()
-        elif self.rc:
-            self.print_key()
-            print ' /  \\'
-            print '     {0}'.format(self.rc.key)
-            self.rc.show()
-
-    def show_both_children(self):
-        print ' /  \\'
-        print '{0}    {1}'.format(self.lc.key, self.rc.key)
-        self.lc.show()
-        self.rc.show()
 
 def grow_test_tree():
     root = Node('r')
@@ -40,7 +12,7 @@ def grow_test_tree():
     b.rc = d = Node('d')
     c.rc = e = Node('e')
     d.lc = f = Node('f')
-    # root.show()
+    root.show()
     return root
 
 def is_key_in_tree(root, u):
@@ -65,3 +37,4 @@ def fca(root, u, v):
 if __name__ == '__main__':
     root = grow_test_tree()
     print 'first common ancestor: node {0}'.format(fca(root, 'e', 'f').key)
+    assert fca(root, 'e', 'f').key == 'b'
