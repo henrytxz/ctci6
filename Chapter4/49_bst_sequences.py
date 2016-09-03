@@ -38,7 +38,6 @@ def bst_to_arrays(bst):
     As = [[]]
     fs = [[bst]]
     As, fs = step(As[0], fs[0])
-    # print map(lambda f: f, fs)
 
     while any(map(lambda f: len(f)>0, fs)):
         newAs = []
@@ -47,14 +46,10 @@ def bst_to_arrays(bst):
             newA, new_f = step(A, f)
             newAs.extend(newA)
             new_fs.extend(new_f)
-            # As.remove(A)
-            # fs.remove(f)
         As = newAs
         fs = new_fs
 
     print len(As)
-    # As = set(As)
-    # print len(As)
     for A in As:
         print ','.join(map(lambda node: node.key, A))
 
