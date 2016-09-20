@@ -19,7 +19,7 @@ class Node(object):
             self.lc.show()
         elif self.rc:
             self.print_key()
-            print ' /  \\'
+            print '    \\'
             print '     {0}'.format(self.rc.key)
             self.rc.show()
 
