@@ -8,14 +8,34 @@ then from that node in t1, i recursively check left and right subtree to see if 
 
 suppose this breaks down then i look for another occurrence of t2's root
 """
+from Chapter4.random_node_4_11 import BST
 
 def is_subtree(t2, t1):
-    return tree_match(t2, t1) or is_subtree(t2, t1.left) or \
-           is_subtree(t2, t1.right)
+    if not t1 and not t2:
+        return True
+    if not t1:
+        return False
+    return tree_match(t2, t1) or is_subtree(t2, t1.lc) or \
+           is_subtree(t2, t1.rc)
 
 def tree_match(t2, t1):
     if (t2 and not t1) or (not t2 and t1):
        return False
 
     return (not t2 and not t1) or \
-           ((t1.key == t2.key) and tree_match(t2.left, t1.left) and tree_match(t2.right, t1.right))
+           ((t1.key == t2.key) and tree_match(t2.lc, t1.lc) and tree_match(t2.rc, t1.rc))
+
+def test_case():
+    tree = BST(3)
+    tree.insert(1)
+    tree.insert(2)
+    tree.insert(5)
+    tree.insert(4)
+    tree.show()
+    print '='*28
+    assert is_subtree(None, None)
+    assert is_subtree(None, tree.root)  # empty tree is a subtree of tree
+    assert is_subtree(tree.root, None) == False # tree not subtree of empty tree
+
+if __name__ == '__main__':
+    test_case()

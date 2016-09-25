@@ -15,13 +15,19 @@ from random import choice
 from Chapter4.node import Node
 
 class AugmentedNode(Node):
+    dummy_key = 'root_parent'
+
     def __init__(self, key):
         super(AugmentedNode, self).__init__(key)
         self.left_tree_size = 0
 
     @staticmethod
+    def is_root_parent(node):
+        return node.key == AugmentedNode.dummy_key
+
+    @staticmethod
     def dummy_node():
-        node = AugmentedNode('dummy')
+        node = AugmentedNode(AugmentedNode.dummy_key)
         return node
 
 class BST(object):
@@ -69,10 +75,7 @@ class BST(object):
             if i%2 == 0:
                 tree_level = i/2
                 for j, p in enumerate(positions):
-                    try:
-                        row[p] = str(all_levels[tree_level][j].key)
-                    except Exception:
-                        print 'investigate'
+                    row[p] = str(all_levels[tree_level][j].key)
             else:
                 for j, p in enumerate(positions):
                     if j%2 == 0:
@@ -149,7 +152,9 @@ class BST(object):
             return  # key not found => nothing to delete
 
     def remove_helper(self, parent, left_or_right, new_child_node):
-        if parent.key == 'dummy':
+        if AugmentedNode.is_root_parent(parent):
+            new_child_node.left_tree_size \
+                = self.root.left_tree_size -1  # -1 for deleting root
             self.root = new_child_node
         elif left_or_right == 'left':
             parent.lc = new_child_node
@@ -182,23 +187,25 @@ class BST(object):
         del node
 
 
-def test_get_random_node():
+def test_get_random_node(tree, sample_times):
     draws = []
-    for l in range(5):
-        for i in range(600):
+    distinct_keys = set()
+    for l in range(4):
+        for i in range(sample_times):
             try:
-                draws.append(tree.get_random_node().key)
+                key_drawn = tree.get_random_node().key
+                draws.append(key_drawn)
+                distinct_keys.add(key_drawn)
             except Exception:
                 print 'oops'
 
-        for element in [16, 12, 18, 10, 14, 20]:
+        for element in distinct_keys:
             print '{0} was drawn {1} times'.format(element,
                                                    draws.count(element))
         print '=' * 88
         draws = []
 
-
-if __name__ == '__main__':
+def test_case_1():
     tree = BST(16)
     tree.insert(12)
     tree.insert(18)
@@ -206,18 +213,26 @@ if __name__ == '__main__':
     tree.insert(14)
     tree.insert(20)
     # tree.show()
-    # test_get_random_node()
-    print '='*16
+    test_get_random_node(tree, 600)
 
+def test_case_2():
     tree = BST(3)
     tree.insert(1)
     tree.insert(2)
     tree.insert(5)
     tree.insert(4)
     tree.show()
-    print '='*18
+    print '=' * 28
     tree.delete(3)
     print 'deleted key 3'
     tree.show()
+    print '=' * 28
     # for row in tree.draw_grid(4):
     #     print row
+    test_get_random_node(tree, 400)
+
+if __name__ == '__main__':
+    # test_case_1()
+    # print '='*16
+    test_case_2()
+
